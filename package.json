@@ -1,0 +1,13 @@
+{
+  "name": "desafio-compaso",
+  "version": "1.0.0",
+  "description": "Compasso API - Registration management system",
+  "main": "src/main.ts",
+  "repository": "https://github.com/FernandoGurgel/desafio-compasso.git",
+  "author": "Fernando Gurgel",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.27.0",
+    "typescript": "^4.3.2"
+  }
+}
