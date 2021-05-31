@@ -11,7 +11,7 @@ interface ICity {
   state: string
 }
 
-export class CreateCityService {
+export class CityService {
   mapper;
 
   constructor () {
@@ -19,7 +19,7 @@ export class CreateCityService {
     this.mapper = new DataMapper({ client })
   }
 
-  async save ({ name, state }: ICity): Promise<any> {
+  async save (name:String, state:string): Promise<any> {
     try {
       const city = new City()
       city.name = name

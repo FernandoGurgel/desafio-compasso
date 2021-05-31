@@ -16,6 +16,7 @@
     ],
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

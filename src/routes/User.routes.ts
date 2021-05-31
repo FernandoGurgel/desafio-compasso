@@ -8,7 +8,7 @@ userRoutes.put('/:id', async (request, response) => {
   const { fullName } = request.body
   const { id } = request.params
   const user = new UserService()
-  const responseUser = await user.update({ id, fullName })
+  const responseUser = await user.update({ id: id.toString(), fullName: fullName.toString() })
   return response.status(200).json({ user: responseUser })
 })
 
@@ -23,6 +23,15 @@ userRoutes.get('/', async (request, response) => {
   const service = new UserService()
   const users = await service.getAllUser()
   return response.status(200).json({ users: users })
+})
+
+userRoutes.get('/name', async (request, response) => {
+  const { name } = request.query
+  if (name) {
+    const service = new UserService()
+    const users = await service.getByName({ name })
+    return response.status(200).json({ users: users })
+  }
 })
 
 userRoutes.get('/:id', async (request, response) => {

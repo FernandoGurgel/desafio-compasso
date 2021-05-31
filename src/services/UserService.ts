@@ -2,7 +2,8 @@ import { User } from '@model/User'
 import { City } from '@model/City'
 import env from '@config/config'
 import { DataMapper } from '@aws/dynamodb-data-mapper'
-import DynamoDB = require('aws-sdk/clients/dynamodb');
+import DynamoDB from 'aws-sdk/clients/dynamodb'
+import { contains } from '@aws/dynamodb-expressions'
 
 interface ICity {
   id: string,
@@ -55,15 +56,18 @@ export class UserService {
     }
   }
 
-  async save ({ fullName, gender, birthday, cityId }: Iuser): Promise<User> {
+  async save ({ fullName, gender, birthday, cityId }: Iuser): Promise<User|undefined> {
     try {
-      const user = new User()
-      user.fullName = fullName
-      user.gender = gender
-      user.birthday = birthday
-      user.cityId = cityId
-      const responseDynamoDB = await this.mapper.put(user)
-      return responseDynamoDB
+      if (cityId) {
+        const user = new User()
+        user.fullName = fullName
+        user.gender = gender
+        user.birthday = birthday
+        user.cityId = cityId
+        const responseDynamoDB = await this.mapper.put(user)
+        return responseDynamoDB
+      }
+      return undefined
     } catch (e) {
       throw new Error('Erro para consulta')
     }
@@ -110,5 +114,21 @@ export class UserService {
     } catch (e) {
       throw new Error('Erro para consulta ' + id)
     }
+  }
+
+  async getByName ({ name }:any):Promise<any> {
+    const listUser:User[] = []
+    const iterator = this.mapper.scan(User, {
+      filter: {
+        ...contains(name),
+        subject: 'fullName'
+      }
+    })
+
+    for await (const item of iterator) {
+      listUser.push(item)
+    }
+
+    return listUser
   }
 }
